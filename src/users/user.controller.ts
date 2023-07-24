@@ -1,4 +1,10 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { randomUUID } from 'crypto';
+
+type BodyUser = {
+  name: string;
+  age: number;
+};
 
 @Controller('users')
 export class UserController {
@@ -12,5 +18,10 @@ export class UserController {
   @Get('findByPages')
   findByPages(@Query('p') p: string) {
     return 'Queries p: ' + p;
+  }
+
+  @Post('/create')
+  create(@Body() body: BodyUser) {
+    return { ...body, id: randomUUID() };
   }
 }
