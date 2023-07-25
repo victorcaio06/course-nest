@@ -3,7 +3,9 @@ import { randomUUID } from 'crypto';
 
 type BodyUser = {
   name: string;
-  age: number;
+  username: string;
+  password: string;
+  email: string;
 };
 
 @Controller('users')

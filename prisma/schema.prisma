@@ -12,6 +12,7 @@ datasource db {
 
 model Users {
   id       String @default(uuid())
+  name     String
   username String @db.VarChar(50)
   email    String @db.VarChar(100)
   password String
