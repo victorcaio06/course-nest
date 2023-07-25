@@ -6,7 +6,7 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common';
-import { CreateUserDTO } from './dto/create-user.dto';
+import { CreateUserDTO } from './dto/user.dto';
 import { CreateUserUseCase } from './use-cases/create-user.usecase';
 import { CreateUserValidationPipe } from './pipe/create-user.validation.pipe';
 

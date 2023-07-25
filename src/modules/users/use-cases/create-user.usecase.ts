@@ -1,17 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 import * as bcrypt from 'bcrypt';
+import { randomUUID } from 'crypto';
 
-import { PrismaService } from 'src/infra/database/prisma/prisma.service';
-import { CreateUserDTO } from '../dto/create-user.dto';
+import { CreateUserDTO } from '../dto/user.dto';
+import { IUserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class CreateUserUseCase {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private userRepository: IUserRepository) {}
 
   async execute({ name, username, email, password }: CreateUserDTO) {
-    const user = await this.prismaService.users.findFirst({
-      where: { OR: [{ email }, { username }] },
+    const user = await this.userRepository.findByUsernameOrEmail({
+      username,
+      email,
     });
 
     if (user)
@@ -19,8 +20,12 @@ export class CreateUserUseCase {
 
     password = await bcrypt.hash(password, 6);
 
-    const userCreated = await this.prismaService.users.create({
-      data: { name, email, password, username, id: randomUUID() },
+    const userCreated = await this.userRepository.save({
+      id: randomUUID(),
+      name,
+      username,
+      email,
+      password,
     });
 
     return {
