@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { CreateUserDTO } from '../dto/create-user.dto';
@@ -12,9 +12,11 @@ export class CreateUserUseCase {
       where: { OR: [{ email }, { username }] },
     });
 
-    if (user) throw new Error('User already exists!');
+    if (user)
+      throw new HttpException('User already exists!', HttpStatus.BAD_REQUEST);
 
-    if (name === null || password === null) throw new Error('Invalid field!!');
+    if (name === undefined || password === undefined)
+      throw new Error('Invalid fields!');
 
     const userCreated = await this.prismaService.users.create({
       data: { name, email, password, username, id: randomUUID() },

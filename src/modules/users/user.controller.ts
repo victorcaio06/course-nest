@@ -1,4 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpException,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { CreateUserUseCase } from './use-cases/create-user.usecase';
 
@@ -8,6 +14,11 @@ export class UserController {
 
   @Post()
   async create(@Body() body: CreateUserDTO) {
-    return await this.createUserUseCase.execute(body);
+    try {
+      return await this.createUserUseCase.execute(body);
+    } catch (error) {
+      if (error.message === 'Invalid fields!')
+        throw new HttpException('Invalid fields!', HttpStatus.BAD_REQUEST);
+    }
   }
 }
