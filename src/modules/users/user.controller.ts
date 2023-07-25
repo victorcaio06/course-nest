@@ -1,29 +1,13 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { randomUUID } from 'crypto';
-
-type BodyUser = {
-  name: string;
-  username: string;
-  password: string;
-  email: string;
-};
+import { Body, Controller, Post } from '@nestjs/common';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { CreateUserUseCase } from './use-cases/create-user.usecase';
 
 @Controller('users')
 export class UserController {
-  @Get(':id')
-  findById(@Param('id') id: string) {
-    console.log(id);
+  constructor(private readonly createUserUseCase: CreateUserUseCase) {}
 
-    return 'Usuário do ID: ' + id;
-  }
-
-  @Get('findByPages')
-  findByPages(@Query('p') p: string) {
-    return 'Queries p: ' + p;
-  }
-
-  @Post('/create')
-  create(@Body() body: BodyUser) {
-    return { ...body, id: randomUUID() };
+  @Post()
+  async create(@Body() body: CreateUserDTO) {
+    return await this.createUserUseCase.execute(body);
   }
 }

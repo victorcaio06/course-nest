@@ -1,20 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
-
-export type CreateUserDTO = {
-  name: string;
-  username: string;
-  email: string;
-  password: string;
-};
+import { CreateUserDTO } from '../dto/create-user.dto';
 
 @Injectable()
 export class CreateUserUseCase {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private prismaService: PrismaService) {}
 
   async execute({ name, username, email, password }: CreateUserDTO) {
-    const user = await this.prismaService.users.findFirstOrThrow({
+    const user = await this.prismaService.users.findFirst({
       where: { OR: [{ email }, { username }] },
     });
 
