@@ -4,21 +4,19 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  UsePipes,
 } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { CreateUserUseCase } from './use-cases/create-user.usecase';
+import { CreateUserValidationPipe } from './pipe/create-user.validation.pipe';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly createUserUseCase: CreateUserUseCase) {}
 
   @Post()
+  @UsePipes(new CreateUserValidationPipe())
   async create(@Body() body: CreateUserDTO) {
-    try {
-      return await this.createUserUseCase.execute(body);
-    } catch (error) {
-      if (error.message === 'Invalid fields!')
-        throw new HttpException('Invalid fields!', HttpStatus.BAD_REQUEST);
-    }
+    return await this.createUserUseCase.execute(body);
   }
 }

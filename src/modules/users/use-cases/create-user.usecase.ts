@@ -17,9 +17,6 @@ export class CreateUserUseCase {
     if (user)
       throw new HttpException('User already exists!', HttpStatus.BAD_REQUEST);
 
-    if (name === undefined || password === undefined)
-      throw new Error('Invalid fields!');
-
     password = await bcrypt.hash(password, 6);
 
     const userCreated = await this.prismaService.users.create({
