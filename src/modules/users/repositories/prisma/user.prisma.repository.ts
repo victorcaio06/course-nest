@@ -12,18 +12,24 @@ import { IUserRepository } from '../user.repository';
 export class UserPrismaRepository implements IUserRepository {
   constructor(private prismaService: PrismaService) {}
 
+  async save(data: UserToPrisma): Promise<UserCreatedDTO> {
+    return await this.prismaService.users.create({
+      data,
+    });
+  }
+
+  async findByUsername(username: string): Promise<UserCreatedDTO | null> {
+    return await this.prismaService.users.findFirst({
+      where: { username },
+    });
+  }
+
   async findByUsernameOrEmail({
     username,
     email,
   }: UsernameAndEmail): Promise<UserCreatedDTO | null> {
     return await this.prismaService.users.findFirst({
       where: { OR: [{ username }, { email }] },
-    });
-  }
-
-  async save(data: UserToPrisma): Promise<UserCreatedDTO> {
-    return await this.prismaService.users.create({
-      data,
     });
   }
 }
