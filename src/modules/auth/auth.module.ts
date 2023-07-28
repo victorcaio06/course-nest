@@ -5,10 +5,12 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { PasswordBcrypt } from 'src/infra/shared/crypto/bcrypt/password.bcrypt';
 import { IPasswordCrypto } from 'src/infra/shared/crypto/password.crypto';
-import { UserPrismaRepository } from '../users/repositories/prisma/user.prisma.repository';
+import { UserPrismaRepository } from '../../infra/database/prisma/repositories/user.prisma.repository';
 import { IUserRepository } from '../users/repositories/user.repository';
 import { AuthController } from './auth.controller';
 import { SignInUseCase } from './use-cases/sign-in.usecase';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
@@ -28,6 +30,10 @@ import { SignInUseCase } from './use-cases/sign-in.usecase';
     {
       provide: IPasswordCrypto,
       useClass: PasswordBcrypt,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
     },
   ],
   controllers: [AuthController],

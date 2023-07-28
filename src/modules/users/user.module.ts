@@ -3,7 +3,7 @@ import { UserController } from './user.controller';
 import { CreateUserUseCase } from './use-cases/create-user.usecase';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { IUserRepository } from './repositories/user.repository';
-import { UserPrismaRepository } from './repositories/prisma/user.prisma.repository';
+import { UserPrismaRepository } from '../../infra/database/prisma/repositories/user.prisma.repository';
 
 @Module({
   imports: [],

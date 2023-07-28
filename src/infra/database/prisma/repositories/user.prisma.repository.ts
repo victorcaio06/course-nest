@@ -5,8 +5,8 @@ import {
   UserCreatedDTO,
   UserToPrisma,
   UsernameAndEmail,
-} from '../../dto/user.dto';
-import { IUserRepository } from '../user.repository';
+} from '../../../../modules/users/dto/user.dto';
+import { IUserRepository } from '../../../../modules/users/repositories/user.repository';
 
 @Injectable()
 export class UserPrismaRepository implements IUserRepository {
