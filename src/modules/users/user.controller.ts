@@ -1,22 +1,17 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Request,
-  UseGuards,
-  UsePipes,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UsePipes } from '@nestjs/common';
 
+import { Public } from '../auth/decorators/public.decorator';
 import { CreateUserDTO } from './dto/user.dto';
 import { CreateUserValidationPipe } from './pipe/create-user.validation.pipe';
 import { CreateUserUseCase } from './use-cases/create-user.usecase';
-import { Public } from '../auth/decorators/public.decorator';
-import { AuthGuard } from '../auth/guards/auth.guard';
+import { ProfileUserUseCase } from './use-cases/profile-user.usecase';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly createUserUseCase: CreateUserUseCase) {}
+  constructor(
+    private readonly createUserUseCase: CreateUserUseCase,
+    private readonly profileUserUseCase: ProfileUserUseCase,
+  ) {}
 
   @Public()
   @Post()
@@ -26,7 +21,9 @@ export class UserController {
   }
 
   @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  async getProfile(@Request() req) {
+    return await this.profileUserUseCase.execute(req.user.sub);
+
+    // return req.user;
   }
 }

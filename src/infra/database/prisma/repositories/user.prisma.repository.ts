@@ -18,6 +18,12 @@ export class UserPrismaRepository implements IUserRepository {
     });
   }
 
+  async findById(id: string): Promise<UserCreatedDTO | null> {
+    return await this.prismaService.users.findUnique({
+      where: { id },
+    });
+  }
+
   async findByUsername(username: string): Promise<UserCreatedDTO | null> {
     return await this.prismaService.users.findFirst({
       where: { username },
