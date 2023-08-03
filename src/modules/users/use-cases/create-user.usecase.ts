@@ -29,11 +29,7 @@ export class CreateUserUseCase {
     });
 
     return {
-      name,
-      username,
-      email,
-      password,
-      id: userCreated.id,
+      ...userCreated,
     };
   }
 }
