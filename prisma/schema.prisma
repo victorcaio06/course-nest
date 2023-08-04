@@ -20,7 +20,40 @@ model Users {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  tasks TaskUser[]
+
   @@id([id])
   @@unique([username, email])
   @@map("users")
+}
+
+model Tasks {
+  id          String    @default(uuid())
+  title       String
+  description String?
+  priority    String?
+  status      String?
+  start_at    DateTime?
+  end_at      DateTime?
+
+  user TaskUser[]
+
+  @@id([id])
+  @@unique([title])
+  @@map("tasks")
+}
+
+model TaskUser {
+  id String @default(uuid())
+
+  task Tasks @relation(fields: [task_id], references: [id])
+  user Users @relation(fields: [user_id], references: [id])
+
+  task_id    String
+  user_id    String
+  created_at DateTime @default(now())
+
+  @@id([user_id, task_id])
+  @@unique([id])
+  @@map("tasks_users")
 }
