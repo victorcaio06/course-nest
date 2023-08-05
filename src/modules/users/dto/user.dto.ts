@@ -19,3 +19,12 @@ export type UsernameAndEmail = {
 export type UserToPrisma = {
   id: string;
 } & CreateUserDTO;
+
+export type FileDTO = {
+  fieldName: string;
+  originalName: string;
+  encoding: string;
+  minetype: string;
+  buffer: Buffer;
+  size: number;
+};

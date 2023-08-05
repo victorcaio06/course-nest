@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 
 import { Public } from '../auth/decorators/public.decorator';
 import {
@@ -7,6 +15,8 @@ import {
 } from './schemas/create-user.schema';
 import { CreateUserUseCase } from './use-cases/create-user.usecase';
 import { ProfileUserUseCase } from './use-cases/profile-user.usecase';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { FileDTO } from './dto/user.dto';
 
 @Controller('users')
 export class UserController {
@@ -32,5 +42,12 @@ export class UserController {
     return await this.profileUserUseCase.execute(req.user.sub);
 
     // return req.user;
+  }
+
+  @Public()
+  @Post('avatar')
+  @UseInterceptors(FileInterceptor('file'))
+  async addUserAvatar(@UploadedFile() file: FileDTO) {
+    console.log(file);
   }
 }
