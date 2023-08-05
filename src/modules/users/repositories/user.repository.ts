@@ -11,4 +11,5 @@ export abstract class IUserRepository {
   abstract findByUsernameOrEmail(
     data: UsernameAndEmail,
   ): Promise<UserCreatedDTO | null>;
+  abstract updateAvatar(id: string, avatarUrl: string): Promise<void>;
 }

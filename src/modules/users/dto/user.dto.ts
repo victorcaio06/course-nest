@@ -21,10 +21,15 @@ export type UserToPrisma = {
 } & CreateUserDTO;
 
 export type FileDTO = {
-  fieldName: string;
-  originalName: string;
+  fieldname: string;
+  originalname: string;
   encoding: string;
   minetype: string;
   buffer: Buffer;
   size: number;
+};
+
+export type AvatarDTO = {
+  idUser: string;
+  file: FileDTO;
 };

@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Request,
   UploadedFile,
   UseInterceptors,
@@ -17,12 +18,14 @@ import { CreateUserUseCase } from './use-cases/create-user.usecase';
 import { ProfileUserUseCase } from './use-cases/profile-user.usecase';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileDTO } from './dto/user.dto';
+import { UserAvatarUseCase } from './use-cases/user-avatar.usecase';
 
 @Controller('users')
 export class UserController {
   constructor(
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly profileUserUseCase: ProfileUserUseCase,
+    private readonly userAvatarUseCase: UserAvatarUseCase,
   ) {}
 
   @Public()
@@ -44,10 +47,12 @@ export class UserController {
     // return req.user;
   }
 
-  @Public()
-  @Post('avatar')
+  @Put('avatar')
   @UseInterceptors(FileInterceptor('file'))
-  async addUserAvatar(@UploadedFile() file: FileDTO) {
-    console.log(file);
+  async addUserAvatar(@Request() request, @UploadedFile() file: FileDTO) {
+    return await this.userAvatarUseCase.execute({
+      idUser: request.user.sub,
+      file,
+    });
   }
 }

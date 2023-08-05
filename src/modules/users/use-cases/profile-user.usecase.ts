@@ -11,7 +11,7 @@ export class ProfileUserUseCase {
 
     if (!user) throw new NotFoundException('User not found!');
 
-    const userToDomain = UserViewModel.toHttp(user);
+    const userToDomain = UserViewModel.toHttp({ ...user, avatar_url: null });
 
     return userToDomain;
   }

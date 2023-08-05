@@ -18,7 +18,7 @@ export class StorageSupabaseRepository implements IStorageRepository {
   async upload(file: FileDTO, folder: string): Promise<any> {
     const data = await this.client.storage
       .from(this.supabaseBucket)
-      .upload(`${folder}/` + file.originalName, file.buffer, {
+      .upload(`${folder}/` + file.originalname, file.buffer, {
         upsert: true,
       });
 
