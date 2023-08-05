@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
 
@@ -7,6 +7,8 @@ import { IUserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class CreateUserUseCase {
+  private readonly logger = new Logger(CreateUserUseCase.name);
+
   constructor(private userRepository: IUserRepository) {}
 
   async execute({ name, username, email, password }: CreateUserDTO) {
@@ -15,9 +17,10 @@ export class CreateUserUseCase {
       email,
     });
 
-    if (user)
+    if (user) {
+      this.logger.error(`User ${username} already exists...`);
       throw new HttpException('User already exists!', HttpStatus.BAD_REQUEST);
-
+    }
     password = await bcrypt.hash(password, 6);
 
     const userCreated = await this.userRepository.save({

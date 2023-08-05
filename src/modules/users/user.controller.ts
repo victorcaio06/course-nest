@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Post, Request, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 
 import { Public } from '../auth/decorators/public.decorator';
-import { CreateUserValidationPipe } from './pipe/create-user.validation.pipe';
 import {
   CreateUserResponseSchemaDTO,
   CreateUserSchemaDTO,
