@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { extname } from 'path';
 
 import { AvatarDTO } from '../dto/user.dto';
-import { IStorageRepository } from 'src/infra/providers/storage/storage.repository';
+import { IStorageRepository } from '../../../infra/providers/storage/storage.repository';
 import { IUserRepository } from '../repositories/user.repository';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IUserRepository } from '../repositories/user.repository';
-import { UserViewModel } from 'src/infra/http/view-models/user-view-model';
+import { UserViewModel } from '../../../infra/http/view-models/user-view-model';
 
 @Injectable()
 export class ProfileUserUseCase {
