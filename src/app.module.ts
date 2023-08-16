@@ -5,12 +5,14 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { taskModule } from './modules/tasks/task.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
     UserModule,
     taskModule,
     AuthModule,
+    NotificationModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,

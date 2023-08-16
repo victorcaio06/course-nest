@@ -1,13 +1,12 @@
 import { Test } from '@nestjs/testing';
-import { UserController } from '../user.controller';
-import { CreateUserUseCase } from '../use-cases/create-user.usecase';
-import { CreateUserSchemaDTO } from '../schemas/create-user.schema';
-import { IUserRepository } from '../repositories/user.repository';
+import { IStorageRepository } from '../../../infra/providers/storage/storage.repository';
 import { UserInMemoryRepository } from '../repositories/in-memory/user.in-memory.repository';
+import { IUserRepository } from '../repositories/user.repository';
+import { CreateUserSchemaDTO } from '../schemas/create-user.schema';
+import { CreateUserUseCase } from '../use-cases/create-user.usecase';
 import { ProfileUserUseCase } from '../use-cases/profile-user.usecase';
 import { UserAvatarUseCase } from '../use-cases/user-avatar.usecase';
-import { IStorageRepository } from '../../../infra/providers/storage/storage.repository';
-import { StorageSupabaseRepository } from '../../../infra/providers/storage/supabase/storage.supabase.repository';
+import { UserController } from '../user.controller';
 
 describe('User Controller', () => {
   let userController: UserController;
