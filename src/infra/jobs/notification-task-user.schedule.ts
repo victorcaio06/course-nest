@@ -20,13 +20,11 @@ export class NotificationTaskUserSchedule {
     @Inject('NOTIFICATION') private readonly notificationClient: ClientProxy,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async getAllTaskDay() {
     const tasks = await this.taskRepository.findAllStartDay();
 
     if (tasks) {
-      console.log('=== Enviando a notificação ===');
-
       tasks.forEach((task) => {
         const message: MessageDTO = {
           name: task.user.name,
