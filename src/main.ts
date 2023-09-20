@@ -10,6 +10,7 @@ async function bootstrap() {
     .setDescription('API responsible for managing user tasks')
     .setVersion('1.0')
     .setBasePath('http://localhost:3000')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
