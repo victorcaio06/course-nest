@@ -8,10 +8,19 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { zodToOpenAPI } from 'nestjs-zod';
 
 import { Public } from '../auth/decorators/public.decorator';
 import {
   CreateUserResponseSchemaDTO,
+  CreateUserSchema,
   CreateUserSchemaDTO,
 } from './schemas/create-user.schema';
 import { CreateUserUseCase } from './use-cases/create-user.usecase';
@@ -20,6 +29,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileDTO } from './dto/user.dto';
 import { UserAvatarUseCase } from './use-cases/user-avatar.usecase';
 
+const schemaUserSwagger = zodToOpenAPI(CreateUserSchema);
+const schemaUserSwaggerResponse = zodToOpenAPI(CreateUserResponseSchemaDTO);
+
+@ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(
@@ -28,6 +41,12 @@ export class UserController {
     private readonly userAvatarUseCase: UserAvatarUseCase,
   ) {}
 
+  @ApiBody({ schema: schemaUserSwagger, description: 'User creation' })
+  @ApiCreatedResponse({
+    schema: schemaUserSwaggerResponse,
+    description: 'User created successfully',
+  })
+  @ApiResponse({ description: 'User already exists!', status: 400 })
   @Public()
   @Post()
   // @UsePipes(new CreateUserValidationPipe())
