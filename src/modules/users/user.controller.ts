@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiResponse,
@@ -59,6 +60,8 @@ export class UserController {
     return response.data;
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({ status: 200, description: 'Get user info' })
   @Get('profile')
   async getProfile(@Request() req) {
     return await this.profileUserUseCase.execute(req.user.sub);
@@ -66,6 +69,8 @@ export class UserController {
     // return req.user;
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({ status: 200, description: 'Added user avatar' })
   @Put('avatar')
   @UseInterceptors(FileInterceptor('file'))
   async addUserAvatar(@Request() request, @UploadedFile() file: FileDTO) {
