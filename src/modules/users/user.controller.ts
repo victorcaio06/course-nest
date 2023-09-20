@@ -61,7 +61,7 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Get user info' })
+  @ApiResponse({ status: 200, description: 'Get user profile' })
   @Get('profile')
   async getProfile(@Request() req) {
     return await this.profileUserUseCase.execute(req.user.sub);
@@ -70,7 +70,7 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Added user avatar' })
+  @ApiResponse({ status: 200, description: 'Add user avatar' })
   @Put('avatar')
   @UseInterceptors(FileInterceptor('file'))
   async addUserAvatar(@Request() request, @UploadedFile() file: FileDTO) {
