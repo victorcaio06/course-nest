@@ -7,11 +7,13 @@ import {
   Request,
   UploadedFile,
   UseInterceptors,
+  UsePipes,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiCreatedResponse,
   ApiResponse,
   ApiTags,
@@ -29,6 +31,7 @@ import { ProfileUserUseCase } from './use-cases/profile-user.usecase';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileDTO } from './dto/user.dto';
 import { UserAvatarUseCase } from './use-cases/user-avatar.usecase';
+import { FileValidationPipe } from './pipe/file.validation.pipe';
 
 const schemaUserSwagger = zodToOpenAPI(CreateUserSchema);
 const schemaUserSwaggerResponse = zodToOpenAPI(CreateUserResponseSchemaDTO);
@@ -70,9 +73,22 @@ export class UserController {
   }
 
   @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @ApiResponse({ status: 200, description: 'Add user avatar' })
   @Put('avatar')
   @UseInterceptors(FileInterceptor('file'))
+  @UsePipes(new FileValidationPipe())
   async addUserAvatar(@Request() request, @UploadedFile() file: FileDTO) {
     return await this.userAvatarUseCase.execute({
       idUser: request.user.sub,
