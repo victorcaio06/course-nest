@@ -13,12 +13,12 @@ const schemaSingInSwagger = zodToOpenAPI(SingInSchema);
 export class AuthController {
   constructor(private readonly signInUseCase: SignInUseCase) {}
 
-  @Post('login')
-  @Public()
-  @HttpCode(HttpStatus.OK)
   @ApiBody({ schema: schemaSingInSwagger })
   @ApiResponse({ status: 200, description: 'Return access token' })
   @ApiResponse({ status: 400, description: 'Validation failed' })
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('login')
   async signIn(@Body() body: SingInSchemaDTO) {
     return await this.signInUseCase.execute(body);
   }
