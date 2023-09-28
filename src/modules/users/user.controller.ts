@@ -10,7 +10,6 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
