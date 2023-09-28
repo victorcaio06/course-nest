@@ -14,7 +14,11 @@ export class AuthController {
   constructor(private readonly signInUseCase: SignInUseCase) {}
 
   @ApiBody({ schema: schemaSingInSwagger })
-  @ApiResponse({ status: 200, description: 'Return access token' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return access token',
+    schema: { properties: { access_token: { type: 'string' } } },
+  })
   @ApiResponse({ status: 400, description: 'Validation failed' })
   @Public()
   @HttpCode(HttpStatus.OK)
