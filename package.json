@@ -2,6 +2,9 @@
   "name": "curso-nestj",
   "version": "0.0.1",
   "description": "",
+  "engines": {
+    "node": "20.5.1"
+  },
   "author": "",
   "private": true,
   "license": "UNLICENSED",
